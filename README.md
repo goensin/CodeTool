@@ -8,4 +8,6 @@
 1.添加文件和文件夹<br>
 2.打开文件显示新TabControl窗体<br>
 3.实现删除、复制、剪切和粘贴文件，保存和全部保存等。<br>
-![](https://github.com/goensin/CodeTool/master/CodeTool/Image/screenshot_1.png)
+
+## 截图
+![](https://github.com/goensin/CodeTool/blob/master/CodeTool/Image/screenshot_1.png?raw=true)
