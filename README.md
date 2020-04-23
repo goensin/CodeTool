@@ -10,4 +10,4 @@
 3.实现删除、复制、剪切和粘贴文件，保存和全部保存等。<br>
 
 ## 截图
-![](https://github.com/goensin/CodeTool/blob/master/CodeTool/Image/screenshot_1.png?raw=true)
+![screenshot_1](https://github.com/goensin/CodeTool/blob/master/CodeTool/Image/screenshot_1.png?raw=true)
