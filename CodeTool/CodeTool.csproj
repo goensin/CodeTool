@@ -194,9 +194,6 @@
     <Folder Include="UIService\" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Image\screenshot_1.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Image\Code.ico" />
   </ItemGroup>
   <ItemGroup>
