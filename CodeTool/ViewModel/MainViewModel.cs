@@ -161,6 +161,7 @@ namespace CodeTool.ViewModel
             get => tempNode;
             set { Set(ref tempNode, value); }
         }
+
         #endregion
 
 
@@ -168,7 +169,7 @@ namespace CodeTool.ViewModel
 
         #region 界面操作
         private RelayCommand close;
-        public RelayCommand Close => close ?? (close = new RelayCommand(async () =>
+        public RelayCommand Close => close ?? (close = new RelayCommand(() =>
         {
             App.Current.MainWindow.Close();
         }));
@@ -289,7 +290,11 @@ namespace CodeTool.ViewModel
                         folderPath = codeFolder; //选中空白，添加到根目录
                     }
 
-                    string fileName = (await DialogHost.Show(new AddInfo("添加文件", ".xml"), identifier)).ToString();
+
+
+                    string[] result = (await DialogHost.Show(new AddInfo { DataContext = new AddInfoViewModel("添加文件", true) }, identifier)).ToString().Split('.');
+                    string fileName = result[0];
+                    string extension = string.IsNullOrEmpty(result[1]) ? "cs" : result[1];
 
                     if (File.Exists(Path.Combine(folderPath, fileName + ".xml")))
                     {
@@ -297,7 +302,7 @@ namespace CodeTool.ViewModel
                         return;
                     }
 
-                    if (fileName != "cancel")
+                    if (fileName != "")
                     {
                         var newNode = new TreeNodeInfo
                         {
@@ -307,8 +312,10 @@ namespace CodeTool.ViewModel
                             Content = "",
                             Remarks = "",
                             FilePath = Path.Combine(folderPath, fileName + ".xml"),
-                            Childs = new ObservableCollection<TreeNodeInfo>()
+                            Childs = new ObservableCollection<TreeNodeInfo>(),
+                            Syntax = extension
                         };
+
 
                         if (XmlHelper.Save2File(newNode.FilePath, newNode))
                         {
@@ -369,16 +376,18 @@ namespace CodeTool.ViewModel
                         folderPath = codeFolder; //选中空白，添加到根目录
                     }
 
-                    string fileName = (await DialogHost.Show(new AddInfo("添加文件夹", ""), identifier)).ToString();
+                    string[] result = (await DialogHost.Show(new AddInfo { DataContext = new AddInfoViewModel("添加文件夹", false) }, identifier)).ToString().Split('.');
+                    string fileName = result[0];
+                    string extension = result[1];
 
-                    if (Directory.Exists(Path.Combine(folderPath, fileName)))
+                    if (fileName != "")
                     {
-                        await dialogService.ShowMessage("改文件夹已存在！", identifier);
-                        return;
-                    }
+                        if (Directory.Exists(Path.Combine(folderPath, fileName)))
+                        {
+                            await dialogService.ShowMessage("改文件夹已存在！", identifier);
+                            return;
+                        }
 
-                    if (fileName != "cancel")
-                    {
                         var newNode = new TreeNodeInfo
                         {
                             Name = fileName,
@@ -759,7 +768,7 @@ namespace CodeTool.ViewModel
                     Content = "folder",
                     Remarks = "",
                     Childs = new ObservableCollection<TreeNodeInfo>(),
-                    FilePath = directories[j]
+                    FilePath = directories[j],
                 };
                 LoadTreeNodes(directories[j], dirInfo.Childs);
                 nodes.Add(dirInfo);

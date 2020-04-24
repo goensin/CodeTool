@@ -20,16 +20,9 @@ namespace CodeTool.Dialog
     /// </summary>
     public partial class AddInfo : UserControl
     {
-        public AddInfo(string title,string extension)
+        public AddInfo()
         {
             InitializeComponent();
-
-            Title = title;
-            Extension = extension;
-            DataContext = this;
         }
-
-        public string Title { get; set; }
-        public string Extension { get; set; }
     }
 }

@@ -16,19 +16,25 @@
                 <RowDefinition />
             </Grid.RowDefinitions>
             <TextBlock Text="{Binding Title}" FontSize="20" Foreground="{StaticResource SecondaryAccentBrush}"/>
-            <TextBox x:Name="FileName" Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Center" Grid.Row="1"
-                            md:TextFieldAssist.HasClearButton="True" md:TextFieldAssist.SuffixText="{Binding Extension}">
-            </TextBox>
+            <Grid  VerticalAlignment="Center" Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBox Text="{Binding FileName,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                         md:TextFieldAssist.HasClearButton="True" MinWidth="180" Grid.Column="0"/>
+                <TextBlock Text="." Margin="10 0" Grid.Column="1" VerticalAlignment="Bottom"/>
+                <ComboBox Text="{Binding Extension,UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding ExtensionList}" IsEditable="True" 
+                          Visibility="{Binding ExtensionVisibility}" MinWidth="60" md:HintAssist.Hint="文件类型" Grid.Column="2" VerticalAlignment="Bottom"/>
+            </Grid>
             <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Right" Margin="0 16 0 0">
-                <Button x:Name="BtnEnter" Margin="8 0 0 0" Style="{DynamicResource MaterialDesignFlatButton}" IsDefault="True"
-                    Command="{x:Static md:DialogHost.CloseDialogCommand}" CommandParameter="{Binding ElementName=FileName,Path=Text}">
+                <Button Margin="8 0 0 0" Style="{DynamicResource MaterialDesignFlatButton}" IsDefault="True"
+                        Command="{Binding Confirm}">
                     确定
                 </Button>
-                <Button x:Name="BtnClose" IsCancel="True" Margin="8 0 0 0" Style="{DynamicResource MaterialDesignFlatButton}"
-                    Command="{x:Static md:DialogHost.CloseDialogCommand}">
-                    <Button.CommandParameter>
-                        <system:String>cancel</system:String>
-                    </Button.CommandParameter>
+                <Button IsCancel="True" Margin="8 0 0 0" Style="{DynamicResource MaterialDesignFlatButton}"
+                        Command="{Binding Cancel}">
                     取消
                 </Button>
             </StackPanel>

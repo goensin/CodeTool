@@ -8,10 +8,12 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:converter="clr-namespace:CodeTool.Converter"
         xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Platform"
+        xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
+        xmlns:local="clr-namespace:CodeTool"
         DataContext="{Binding Source={StaticResource Locator},Path=Main}"
         mc:Ignorable="d"
-        Name="CodeTool"
-        Title="" Height="700" Width="1200" WindowStartupLocation="CenterScreen" WindowStyle="None" Background="{StaticResource PrimaryHueLightBrush}">
+        Title="CodeTool"  Height="700" Width="1200" WindowStartupLocation="CenterScreen" WindowStyle="None" 
+        Name="CodeTool" Background="{StaticResource PrimaryHueLightBrush}">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding Loaded}" CommandParameter="{Binding ElementName=Tree}"/>
@@ -45,7 +47,8 @@
                 <Grid>
                     <Grid Margin="3">
                         <md:PackIcon Kind="Duck" VerticalAlignment="Center" Margin="7 0" Height="23" Width="23"/>
-                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Text="代码管理工具"/>
+                        <!--<Image Source="Code.ico" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="7 0" Height="23" Width="23"/>-->
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Text="CodeTool"/>
                     </Grid>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top">
                         <Button Command="{Binding Minimize}" Style="{StaticResource MaterialDesignFlatMidBgButton}"
@@ -68,6 +71,10 @@
                 </Grid>
             </md:ColorZone>
             <!--工具栏-->
+            <!--<local:MvvmTextEditor x:Name="textEditor" FontFamily="Consolas" FontSize="13" ShowLineNumbers="True"
+                                                                VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden" 
+                                                                Height="300" Text="{Binding }">
+                            </local:MvvmTextEditor>-->
             <ToolBarTray Grid.Row="1">
                 <ToolBar Style="{DynamicResource MaterialDesignToolBar}" ClipToBounds="False" Height="30">
                     <Button ToolTip="新建文件" Padding="0" Margin="5 0" Foreground="#0288d1" Command="{Binding AddFile}" CommandParameter="{Binding ElementName=Tree}">
@@ -108,6 +115,7 @@
                 </ToolBar>
             </ToolBarTray>
             <!--内容栏-->
+
             <Grid Grid.Row="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition MinWidth="50" Width="250"/>
@@ -221,17 +229,17 @@
                         <TabControl.ContentTemplate>
                             <DataTemplate>
                                 <Grid Background="{StaticResource MaterialDesignCardBackground}">
-                                    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                                        <TextBox Text="{Binding Content,UpdateSourceTrigger=PropertyChanged}"  VerticalAlignment="Stretch" AcceptsReturn="True"
-                                                  BorderThickness="0" VerticalScrollBarVisibility="Auto" FontFamily="Consolas" FontSize="13">
-         
-                                            <i:Interaction.Triggers>
-                                                <i:EventTrigger EventName="TextChanged">
-                                                    <i:InvokeCommandAction Command="{Binding Source={StaticResource Locator},Path=Main.ContentChange}"/>
-                                                </i:EventTrigger>
-                                            </i:Interaction.Triggers>
-                                        </TextBox>
-                                    </ScrollViewer>
+                                    <local:MvvmTextEditor  ShowLineNumbers="True" Text="{Binding Content}" HorizontalScrollBarVisibility="Auto"
+                                                                FontFamily="Consolas" Syntax="{Binding Syntax}" FontSize="13">
+                                        <i:Interaction.Behaviors>
+                                            <local:AvalonEditBehaviour GiveMeTheText="{Binding Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                        </i:Interaction.Behaviors>
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="TextChanged">
+                                                <i:InvokeCommandAction Command="{Binding Source={StaticResource Locator},Path=Main.ContentChange}"/>
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </local:MvvmTextEditor>
                                 </Grid>
                             </DataTemplate>
                         </TabControl.ContentTemplate>

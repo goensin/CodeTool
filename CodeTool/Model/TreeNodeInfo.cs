@@ -72,5 +72,12 @@ namespace CodeTool.Model
             set { Set(ref needSave, value); }
         }
 
+        private string syntax;
+        public string Syntax
+        {
+            get => syntax;
+            set { Set(ref syntax, value); }
+        }
+
     }
 }
