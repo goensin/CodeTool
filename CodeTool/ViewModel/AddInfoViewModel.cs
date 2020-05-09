@@ -10,15 +10,15 @@ using System.Windows;
 
 namespace CodeTool.ViewModel
 {
-    public class AddInfoViewModel:ViewModelBase
+    public class AddInfoViewModel : ViewModelBase
     {
-        public AddInfoViewModel(string title,bool isFile)
+        public AddInfoViewModel(string title, bool isFile)
         {
             Title = title;
             ExtensionVisibility = isFile ? Visibility.Visible : Visibility.Collapsed;
             ExtensionList = new List<string>
             {
-                "cs","xaml","xml","h","cpp","c","jsp","json",".aspx",".asp","php"
+                "cs","xaml","xml","h","cpp","c","jsp","json",".aspx",".asp","php","css", "py", "go", "java" ,"lua"
             };
         }
 
@@ -55,7 +55,7 @@ namespace CodeTool.ViewModel
 
         private void ConfirmExecute()
         {
-            DialogHost.CloseDialogCommand.Execute($"{FileName}.{Extension}", null);
+            DialogHost.CloseDialogCommand.Execute($"{FileName}|{Extension}", null);
         }
     }
 }

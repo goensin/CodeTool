@@ -14,6 +14,7 @@ namespace CodeTool.Model
     public class TreeNodeInfo : ObservableObject
     {
         private string name;
+        [XmlIgnore]
         public string Name
         {
             get => name;
@@ -57,7 +58,9 @@ namespace CodeTool.Model
             set { Set(ref childs, value); }
         }
 
+        
         private string filePath;
+        [XmlIgnore]
         public string FilePath
         {
             get => filePath;

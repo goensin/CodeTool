@@ -12,8 +12,11 @@
         xmlns:local="clr-namespace:CodeTool"
         DataContext="{Binding Source={StaticResource Locator},Path=Main}"
         mc:Ignorable="d"
-        Title="CodeTool"  Height="700" Width="1200" WindowStartupLocation="CenterScreen" WindowStyle="None" 
-        Name="CodeTool" Background="{StaticResource PrimaryHueLightBrush}">
+        Title="CodeTool"  Height="724" Width="1224" WindowStartupLocation="CenterScreen" WindowStyle="None"
+        Name="CodeTool" Background="{StaticResource PrimaryHueLightBrush}" AllowsTransparency="True" BorderThickness="24">
+    <Window.Effect>
+        <DropShadowEffect BlurRadius="12" Color="Black" Direction="90" ShadowDepth="1"/>
+    </Window.Effect>
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding Loaded}" CommandParameter="{Binding ElementName=Tree}"/>
@@ -77,6 +80,9 @@
                             </local:MvvmTextEditor>-->
             <ToolBarTray Grid.Row="1">
                 <ToolBar Style="{DynamicResource MaterialDesignToolBar}" ClipToBounds="False" Height="30">
+                    <Button ToolTip="刷新" Padding="0" Margin="5 0" Command="{Binding UpdateFile}" CommandParameter="{Binding ElementName=Tree}">
+                        <md:PackIcon Kind="CounterclockwiseArrows"/>
+                    </Button>
                     <Button ToolTip="新建文件" Padding="0" Margin="5 0" Foreground="#0288d1" Command="{Binding AddFile}" CommandParameter="{Binding ElementName=Tree}">
                         <md:PackIcon Kind="FileDocumentBoxPlus" />
                     </Button>
@@ -122,7 +128,7 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <md:Card MinWidth="220" Margin="5">
+                <md:Card Margin="5">
                     <DockPanel>
                         <Grid DockPanel.Dock="Bottom" Margin="5 10">
                             <TreeView x:Name="Tree" ItemsSource="{Binding TreeNodes}">
@@ -201,6 +207,16 @@
                                                 </StackPanel>
                                             </MenuItem.Header>
                                         </MenuItem>
+                                        <Separator/>
+                                        <MenuItem Command="{Binding OpenOnFileManager}" 
+                                                  CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorLevel=1,AncestorType=ContextMenu},Path=PlacementTarget}">
+                                            <MenuItem.Header>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <md:PackIcon Kind="RedoVariant" Margin="0 0 10 0"/>
+                                                    <TextBlock Text="文件管理中打开"/>
+                                                </StackPanel>
+                                            </MenuItem.Header>
+                                        </MenuItem>
                                     </ContextMenu>
                                 </TreeView.ContextMenu>
                                 <TreeView.ItemTemplate>
@@ -215,9 +231,12 @@
                         </Grid>
                     </DockPanel>
                 </md:Card>
-                <md:Card MinWidth="220" Margin="5" Grid.Column="2">
+                <md:Card Margin="5" Grid.Column="2">
                     <dragablz:TabablzControl x:Name="Tabs" ItemsSource="{Binding CurrentNodes}" FixedHeaderCount="0" SelectedIndex="{Binding TabControlIndex}"
                                              Style="{StaticResource ShowCloseButtonTabablzControlStyle}">
+                        <dragablz:TabablzControl.InterTabController>
+                            <dragablz:InterTabController/>
+                        </dragablz:TabablzControl.InterTabController>
                         <dragablz:TabablzControl.HeaderItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal" Margin="0">
@@ -245,7 +264,7 @@
                         </TabControl.ContentTemplate>
                     </dragablz:TabablzControl>
                 </md:Card>
-                <GridSplitter Grid.Column="1" Width="2" VerticalAlignment="Stretch" ShowsPreview="False" 
+                <GridSplitter Grid.Column="1" Width="3" VerticalAlignment="Stretch" ShowsPreview="False" 
                               HorizontalAlignment="Center" Background="{StaticResource AttentionToActionBrush}"/>
             </Grid>
         </Grid>

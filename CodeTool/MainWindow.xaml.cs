@@ -25,12 +25,6 @@ namespace CodeTool
         public MainWindow()
         {
             InitializeComponent();
-
-            //string currentFileName = @"D:\ensin\个人\CodeTool\CodeTool\bin\Debug\code\WPF UI\Material Design.xml";
-            //textEditor.Text = "using ICSharpCode.AvalonEdit;\r\nusing System;\r\nusing System.Collections.Generic; ";
-            //textEditor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinitionByExtension(".cs");
-            //textEditor.Load(currentFileName);
-            //textEditor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinitionByExtension(Path.GetExtension(currentFileName));
         }
     }
 }

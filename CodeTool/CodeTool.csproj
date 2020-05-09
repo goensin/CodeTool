@@ -105,6 +105,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="AvalonEdit\AvalonEditBehaviour.cs" />
+    <Compile Include="Common\LanguageIcon.cs" />
     <Compile Include="Common\XmlHelper.cs" />
     <Compile Include="Dialog\AddInfo.xaml.cs">
       <DependentUpon>AddInfo.xaml</DependentUpon>
@@ -118,10 +119,10 @@
     <Compile Include="Dialog\MyLoading.xaml.cs">
       <DependentUpon>MyLoading.xaml</DependentUpon>
     </Compile>
-    <Compile Include="IMyDialogService.cs" />
+    <Compile Include="Dialog\IMyDialogService.cs" />
     <Compile Include="Model\TreeNodeInfo.cs" />
     <Compile Include="AvalonEdit\MvvmTextEditor.cs" />
-    <Compile Include="MyDialogService.cs" />
+    <Compile Include="Dialog\MyDialogService.cs" />
     <Compile Include="Converter\NeedSaveConverter.cs" />
     <Compile Include="Common\MyVirtualizingStackPanel.cs" />
     <Compile Include="ViewModel\AddInfoViewModel.cs" />
@@ -190,9 +191,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="UIService\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Resource Include="Image\Code.ico" />
   </ItemGroup>

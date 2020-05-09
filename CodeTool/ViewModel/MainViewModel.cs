@@ -244,20 +244,6 @@ namespace CodeTool.ViewModel
                     treeViewItem.IsSelected = true;
                 }
             }
-
-            //if (treeView != null && nodeInfo == null)   // 未选中 节点
-            //{
-            //    TreeNodeInfo selectedItem = treeView.SelectedItem as TreeNodeInfo;
-            //    if (selectedItem != null)
-            //    {
-            //        TreeViewItem treeViewItem = GetTreeViewItem(treeView, nodeInfo);
-            //       // TreeViewItem treeViewItem = treeView.ItemContainerGenerator.ContainerFromItem(selectedItem) as TreeViewItem;
-            //        if (treeViewItem != null)
-            //        {
-            //            treeViewItem.IsSelected = false;
-            //        }
-            //    }
-            //}
         }
 
         private RelayCommand<TreeView> addFile;
@@ -275,7 +261,7 @@ namespace CodeTool.ViewModel
 
                     if (nodeInfo != null)   //选中节点
                     {
-                        if (nodeInfo.IconKind != PackIconKind.Code)   //选非代码文件
+                        if (nodeInfo.IconKind == PackIconKind.Folder || nodeInfo.IconKind == PackIconKind.MicrosoftVisualStudio)   //选中文件夹
                         {
                             folderPath = nodeInfo.FilePath;
 
@@ -292,7 +278,7 @@ namespace CodeTool.ViewModel
 
 
 
-                    string[] result = (await DialogHost.Show(new AddInfo { DataContext = new AddInfoViewModel("添加文件", true) }, identifier)).ToString().Split('.');
+                    string[] result = (await DialogHost.Show(new AddInfo { DataContext = new AddInfoViewModel("添加文件", true) }, identifier)).ToString().Split('|');
                     string fileName = result[0];
                     string extension = string.IsNullOrEmpty(result[1]) ? "cs" : result[1];
 
@@ -307,7 +293,7 @@ namespace CodeTool.ViewModel
                         var newNode = new TreeNodeInfo
                         {
                             Name = fileName,
-                            IconKind = PackIconKind.Code,
+                            IconKind = LanguageIcon.IconPack[extension],
                             Foreground = new SolidColorBrush(Color.FromRgb(0x02, 0x88, 0xd1)),
                             Content = "",
                             Remarks = "",
@@ -315,6 +301,7 @@ namespace CodeTool.ViewModel
                             Childs = new ObservableCollection<TreeNodeInfo>(),
                             Syntax = extension
                         };
+
 
 
                         if (XmlHelper.Save2File(newNode.FilePath, newNode))
@@ -361,7 +348,7 @@ namespace CodeTool.ViewModel
 
                     if (nodeInfo != null)   //选中节点
                     {
-                        if (nodeInfo.IconKind != PackIconKind.Code)   //选非代码文件
+                        if (nodeInfo.IconKind == PackIconKind.Folder || nodeInfo.IconKind == PackIconKind.MicrosoftVisualStudio)   //选中文件夹
                         {
                             folderPath = nodeInfo.FilePath;
 
@@ -376,9 +363,9 @@ namespace CodeTool.ViewModel
                         folderPath = codeFolder; //选中空白，添加到根目录
                     }
 
-                    string[] result = (await DialogHost.Show(new AddInfo { DataContext = new AddInfoViewModel("添加文件夹", false) }, identifier)).ToString().Split('.');
+                    string[] result = (await DialogHost.Show(new AddInfo { DataContext = new AddInfoViewModel("添加文件夹", false) }, identifier)).ToString().Split('|');
                     string fileName = result[0];
-                    string extension = result[1];
+                    //string extension = result[1];
 
                     if (fileName != "")
                     {
@@ -478,7 +465,7 @@ namespace CodeTool.ViewModel
                     TreeNodeInfo nodeInfo = treeView.SelectedItem as TreeNodeInfo;
 
 
-                    if (nodeInfo.IconKind == PackIconKind.Folder) //删除文件夹
+                    if (nodeInfo.IconKind == PackIconKind.Folder || nodeInfo.IconKind == PackIconKind.MicrosoftVisualStudio) //删除文件夹
                     {
                         if (await dialogService.ShowConfirm($"是否确定删除文件夹'{ nodeInfo.Name}'以及文件夹内所有文件？", identifier))
                         {
@@ -540,7 +527,7 @@ namespace CodeTool.ViewModel
 
                     if (nodeInfo != null)   //选中节点
                     {
-                        if (nodeInfo.IconKind != PackIconKind.Code)   //选非代码文件
+                        if (nodeInfo.IconKind == PackIconKind.Folder || nodeInfo.IconKind == PackIconKind.MicrosoftVisualStudio)   //选中文件夹
                         {
                             folderPath = nodeInfo.FilePath;
 
@@ -555,7 +542,7 @@ namespace CodeTool.ViewModel
                         folderPath = codeFolder; //选中空白，添加到根目录
                     }
 
-                    if (TempNode.Item1.IconKind == PackIconKind.Code)       //粘贴文件
+                    if (TempNode.Item1.IconKind != PackIconKind.Folder && TempNode.Item1.IconKind != PackIconKind.MicrosoftVisualStudio)       //粘贴文件
                     {
                         string fileName = TempNode.Item1.Name;
 
@@ -661,7 +648,7 @@ namespace CodeTool.ViewModel
         {
             foreach (var node in parentNode.Childs)
             {
-                if (node.IconKind == PackIconKind.Code) //文件
+                if (node.IconKind != PackIconKind.Folder && node.IconKind != PackIconKind.MicrosoftVisualStudio) //文件
                 {
                     node.FilePath = Path.Combine(parentNode.FilePath, node.Name + ".xml");
                 }
@@ -718,7 +705,7 @@ namespace CodeTool.ViewModel
             TreeNodeInfo nodeInfo = treeView.SelectedItem as TreeNodeInfo;
             if (nodeInfo != null)
             {
-                if (nodeInfo.IconKind == PackIconKind.Code)
+                if (nodeInfo.IconKind != PackIconKind.Folder && nodeInfo.IconKind != PackIconKind.MicrosoftVisualStudio)
                 {
                     if (CurrentNodes.Where(n => n.FilePath == nodeInfo.FilePath).Count() == 0)
                     {
@@ -729,7 +716,42 @@ namespace CodeTool.ViewModel
             }
         }
 
+        private RelayCommand<TreeView> openOnFileManager;
+        public RelayCommand<TreeView> OpenOnFileManager => openOnFileManager ?? (openOnFileManager = new RelayCommand<TreeView>(OpenOnFileManagerExecute));
+        //在资源管理器打开文件
+        private void OpenOnFileManagerExecute(TreeView treeView)
+        {
+            TreeNodeInfo nodeInfo = treeView.SelectedItem as TreeNodeInfo;
+            if (nodeInfo.IconKind == PackIconKind.Folder || nodeInfo.IconKind == PackIconKind.MicrosoftVisualStudio)
+            {
+                System.Diagnostics.Process.Start("explorer.exe", nodeInfo.FilePath);
+            }
+        }
 
+
+        private RelayCommand<TreeView> updateFile;
+        public RelayCommand<TreeView> UpdateFile => updateFile ?? (updateFile = new RelayCommand<TreeView>(UpdateFileExecute));
+        //刷新文件目录
+        private void UpdateFileExecute(TreeView treeView)
+        {
+            TreeNodes = new ObservableCollection<TreeNodeInfo>();
+            CurrentNodes = new ObservableCollection<TreeNodeInfo>();
+
+            TreeNodes.Add(new TreeNodeInfo      //添加根文件夹
+            {
+                Name = "code",
+                IconKind = PackIconKind.MicrosoftVisualStudio,
+                Foreground = new SolidColorBrush(Color.FromRgb(0x39, 0x49, 0xab)),
+                Content = "folder",
+                Remarks = "",
+                Childs = new ObservableCollection<TreeNodeInfo>(),
+                FilePath = codeFolder
+            });
+            LoadTreeNodes(codeFolder, TreeNodes[0].Childs);
+
+            TreeViewItem treeViewItem = GetTreeViewItem(treeView, treeView.Items[0]);   //默认展开根节点
+            treeViewItem.IsExpanded = true;
+        }
         #endregion
 
         /// <summary>
@@ -780,8 +802,10 @@ namespace CodeTool.ViewModel
                 var node = XmlHelper.Load2Object<TreeNodeInfo>(files[i]);
                 if (node != null)
                 {
-                    node.IconKind = PackIconKind.Code;
+                    node.Name = Path.GetFileNameWithoutExtension(files[i]);
+                    node.IconKind = string.IsNullOrEmpty(node.Syntax) ? PackIconKind.Code : LanguageIcon.IconPack[node.Syntax];
                     node.Foreground = new SolidColorBrush(Color.FromRgb(0x02, 0x88, 0xd1));
+                    node.FilePath = files[i];
                     nodes.Add(node);
                 }
             }
