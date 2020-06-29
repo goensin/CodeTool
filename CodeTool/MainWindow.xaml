@@ -11,12 +11,13 @@
         xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
         xmlns:local="clr-namespace:CodeTool"
         DataContext="{Binding Source={StaticResource Locator},Path=Main}"
-        mc:Ignorable="d"
-        Title="CodeTool"  Height="724" Width="1224" WindowStartupLocation="CenterScreen" WindowStyle="None"
-        Name="CodeTool" Background="{StaticResource PrimaryHueLightBrush}" AllowsTransparency="True" BorderThickness="24">
-    <Window.Effect>
+        mc:Ignorable="d" Icon="Code.ico"
+        Title="CodeTool"  Height="724" Width="1224" WindowStartupLocation="CenterScreen" 
+        Name="CodeTool" Background="{StaticResource PrimaryHueLightBrush}" Style="{DynamicResource RubyerWindow}" 
+        BorderBrush="{DynamicResource PrimaryHueMidBrush}" BorderThickness="1">
+    <!--<Window.Effect>
         <DropShadowEffect BlurRadius="12" Color="Black" Direction="90" ShadowDepth="1"/>
-    </Window.Effect>
+    </Window.Effect>-->
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding Loaded}" CommandParameter="{Binding ElementName=Tree}"/>
@@ -38,7 +39,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <!--标题栏-->
-            <md:ColorZone md:ShadowAssist.ShadowDepth="Depth2" Mode="PrimaryMid" DockPanel.Dock="Top">
+            <!--<md:ColorZone md:ShadowAssist.ShadowDepth="Depth2" Mode="PrimaryMid" DockPanel.Dock="Top">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseLeftButtonDown">
                         <i:InvokeCommandAction Command="{Binding DragMove}"/>
@@ -49,11 +50,11 @@
                 </i:Interaction.Triggers>
                 <Grid>
                     <Grid Margin="3">
-                        <md:PackIcon Kind="Duck" VerticalAlignment="Center" Margin="7 0" Height="23" Width="23"/>
+                        --><!--<md:PackIcon Kind="Duck" VerticalAlignment="Center" Margin="7 0" Height="23" Width="23"/>-->
                         <!--<Image Source="Code.ico" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="7 0" Height="23" Width="23"/>-->
-                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Text="CodeTool"/>
+                        <!--<TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Text="CodeTool"/>--><!--
                     </Grid>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top">
+                    --><!--<StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top">
                         <Button Command="{Binding Minimize}" Style="{StaticResource MaterialDesignFlatMidBgButton}"
                                     Foreground="{DynamicResource PrimaryHueMidForegroundBrush}">
                             <md:PackIcon Kind="WindowMinimize"/>
@@ -70,9 +71,9 @@
                                     Foreground="{DynamicResource PrimaryHueMidForegroundBrush}">
                             <md:PackIcon Kind="WindowClose"/>
                         </Button>
-                    </StackPanel>
+                    </StackPanel>--><!--
                 </Grid>
-            </md:ColorZone>
+            </md:ColorZone>-->
             <!--工具栏-->
             <!--<local:MvvmTextEditor x:Name="textEditor" FontFamily="Consolas" FontSize="13" ShowLineNumbers="True"
                                                                 VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden" 

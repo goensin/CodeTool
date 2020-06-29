@@ -95,11 +95,11 @@ namespace CodeTool.ViewModel
 
             //CurrentNodes = new ObservableCollection<TreeNodeInfo>(TreeNodes);
 
-            if (!IsInDesignModeStatic)
-            {
-                App.Current.MainWindow.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
-                App.Current.MainWindow.MaxWidth = SystemParameters.MaximizedPrimaryScreenWidth;
-            }
+            //if (!IsInDesignModeStatic)
+            //{
+            //    App.Current.MainWindow.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
+            //    App.Current.MainWindow.MaxWidth = SystemParameters.MaximizedPrimaryScreenWidth;
+            //}
 
 
             MaxVisibility = Visibility.Visible;
